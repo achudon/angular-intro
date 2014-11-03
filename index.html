@@ -18,8 +18,43 @@
 
     </head>
     <body>
-        <main class="container">
+        <!-- attributes needed to add to main from angular -->
+        <main class="container" ng-app="MovieApp" ng-controller="MoviesController">
             <h1>Movies from 2014</h1>
+
+            <p>
+                <input type="search" class="form-control" ng-model="searchString" placeholder="search for a title"/>
+            </p>
+
+            <!--shows that searchString property is being updated-->
+            <!--<p>{{searchString}}</p>-->
+
+            <!--any valid javascript can go between the curly braces. Gets looked up in scope object-->
+            <p>{{filteredMovies.length}} {{filteredMovies.length == 1 ? 'movie' : 'movies'}}</p>
+
+            <table class="table">
+                <thead>
+                    <tr>
+                        <!--add click event attribute to the view-->
+                        <th ng-click="sortBy('title')">Title</th>
+                        <th ng-click="sortBy('studio')">Studio</th>
+                        <th ng-click="sortBy('grossSales')">Sales</th>
+                        <th ng-click="sortBy('ticketsSold')">Tickets</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!--attribute like "movie" used when you want angular to repeat the object for each in an array.
+                    "movie" is a temp variable assigned successively to each object in array-->
+                    <!--Only filter on title!-->
+                    <!--OrderBy takes two parameters: thing to sort on and whether it is ascending or descending-->
+                    <tr ng-repeat = "movie in filteredMovies = (movies | filter : {title : searchString} | orderBy : sortCol : sortReverse)">
+                        <td>{{movie.title}}</td>
+                        <td>{{movie.studio}}</td>
+                        <td>{{movie.grossSales | currency : '$' : 0}}</td>
+                        <td>{{movie.ticketsSold | number}}</td>
+                    </tr>
+                </tbody>
+            </table>
 
         </main>
 
